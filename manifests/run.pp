@@ -45,9 +45,12 @@ define docker::run(
   service { "docker-${title}":
     ensure     => $running,
     enable     => true,
-    hasstatus  => true,
+    status     => "docker ps | grep ${image}",
     hasrestart => true,
-    provider   => upstart;
+    provider   => 'base',
+    restart    => "/sbin/restart docker-${title}",
+    start      => "/sbin/start docker-${title}",
+    stop       => "/sbin/stop docker-${title}";
   }
 
   if str2bool($restart_service) {
