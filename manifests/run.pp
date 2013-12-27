@@ -48,7 +48,7 @@ define docker::run(
     status     => "docker ps | grep ${image}",
     hasrestart => true,
     provider   => 'base',
-    restart    => "/sbin/restart docker-${title}",
+    restart    => "/sbin/stop docker-${title} && /sbin/start docker-${title}", # Upstart won't re-read the config file in all cases unless you stop and start
     start      => "/sbin/start docker-${title}",
     stop       => "/sbin/stop docker-${title}";
   }
